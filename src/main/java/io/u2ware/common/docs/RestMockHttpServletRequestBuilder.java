@@ -13,11 +13,9 @@ import org.springframework.mock.web.MockMultipartHttpServletRequest;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.test.web.servlet.request.ConfigurableSmartRequestBuilder;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartRequest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
