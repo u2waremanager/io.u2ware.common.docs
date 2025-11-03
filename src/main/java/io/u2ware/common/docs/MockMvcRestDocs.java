@@ -36,15 +36,11 @@ public abstract class MockMvcRestDocs {
     //////////////////////////////////////////////
     protected Map<String,DocumentContext> documentContexts = new HashMap<>();
 
-    public void putJson(String key, DocumentContext documentContext) {
-        documentContexts.put(key, documentContext);
-    }
-
-    public <X> X getJson(String key) {
-        return getJson(key, "$");
+    public <X> X context(String key) {
+        return context(key, "$");
     }
     @SuppressWarnings("unchecked")
-    public <X> X getJson(String key, String jsonPath) {
+    public <X> X context(String key, String jsonPath) {
         try{
             DocumentContext document = documentContexts.get(key);
             return (X)document.read(jsonPath);
@@ -53,8 +49,9 @@ public abstract class MockMvcRestDocs {
             return null;
         }
     }
-
-
+    public void context(String key, DocumentContext documentContext) {
+        documentContexts.put(key, documentContext);
+    }
 
     //////////////////////////////////////////////
     //
@@ -91,7 +88,7 @@ public abstract class MockMvcRestDocs {
                     // System.err.print("uri: "+uri);
                     String path = uri.replaceAll(key, "\\$");
                     // System.err.print("path: "+path);
-                    String read = getJson(key, path);
+                    String read = context(key, path);
                     // System.err.print("url: "+read);
                     return UriComponentsBuilder.fromUriString(read).build().toUri();
                 }
@@ -110,41 +107,41 @@ public abstract class MockMvcRestDocs {
     //////////////////////////////////////////////
     //
     //////////////////////////////////////////////
-    public static RestMockHttpServletRequestBuilder GET(Function<String, URI> func, String uri) throws Exception{
+    public static RestMockHttpServletRequestBuilder get(Function<String, URI> func, String uri) throws Exception{
         return RestMockHttpServletRequestBuilder.get(func.apply(uri));
     }
-    public static RestMockHttpServletRequestBuilder POST(Function<String, URI> func, String uri) throws Exception{
+    public static RestMockHttpServletRequestBuilder post(Function<String, URI> func, String uri) throws Exception{
         return RestMockHttpServletRequestBuilder.post(func.apply(uri)).content(new HashMap<>());
     }
-    public static RestMockHttpServletRequestBuilder PUT(Function<String, URI> func, String uri) throws Exception{
+    public static RestMockHttpServletRequestBuilder put(Function<String, URI> func, String uri) throws Exception{
         return RestMockHttpServletRequestBuilder.put(func.apply(uri)).content(new HashMap<>());
     }
-    public static RestMockHttpServletRequestBuilder PATCH(Function<String, URI> func, String uri) throws Exception{
+    public static RestMockHttpServletRequestBuilder patch(Function<String, URI> func, String uri) throws Exception{
         return RestMockHttpServletRequestBuilder.patch(func.apply(uri)).content(new HashMap<>());
     }
-    public static RestMockHttpServletRequestBuilder DELETE(Function<String, URI> func, String uri) throws Exception{
+    public static RestMockHttpServletRequestBuilder delete(Function<String, URI> func, String uri) throws Exception{
         return RestMockHttpServletRequestBuilder.delete(func.apply(uri));
     }     
-    public static RestMockHttpServletRequestBuilder MULTIPART(Function<String, URI> func, String uri) throws Exception{
+    public static RestMockHttpServletRequestBuilder multipart(Function<String, URI> func, String uri) throws Exception{
         return RestMockHttpServletRequestBuilder.multipart(func.apply(uri));
     }
 
-    public static RestMockHttpServletRequestBuilder GET(String uri) throws Exception{
+    public static RestMockHttpServletRequestBuilder get(String uri) throws Exception{
         return RestMockHttpServletRequestBuilder.get(new URI(uri));
     }
-    public static RestMockHttpServletRequestBuilder POST(String uri) throws Exception{
+    public static RestMockHttpServletRequestBuilder post(String uri) throws Exception{
         return RestMockHttpServletRequestBuilder.post(new URI(uri)).content(new HashMap<>());
     }
-    public static RestMockHttpServletRequestBuilder PUT(String uri) throws Exception{
+    public static RestMockHttpServletRequestBuilder put(String uri) throws Exception{
         return RestMockHttpServletRequestBuilder.put(new URI(uri)).content(new HashMap<>());
     }
-    public static RestMockHttpServletRequestBuilder PATCH(String uri) throws Exception{
+    public static RestMockHttpServletRequestBuilder patch(String uri) throws Exception{
         return RestMockHttpServletRequestBuilder.patch(new URI(uri)).content(new HashMap<>());
     }
-    public static RestMockHttpServletRequestBuilder DELETE(String uri) throws Exception{
+    public static RestMockHttpServletRequestBuilder delete(String uri) throws Exception{
         return RestMockHttpServletRequestBuilder.delete(new URI(uri));
     }   
-    public static RestMockHttpServletRequestBuilder MULTIPART(String uri) throws Exception{
+    public static RestMockHttpServletRequestBuilder multipart(String uri) throws Exception{
         return RestMockHttpServletRequestBuilder.multipart(new URI(uri));
     }
 
@@ -163,7 +160,12 @@ public abstract class MockMvcRestDocs {
         };
     }
 
-    public static ResultHandler json(BiConsumer<String,DocumentContext> consumer, String key){
+    public static ResultHandler docs(Consumer<RestDocumentationResultHandlerBuilder> consumer, String identifier) {
+        return RestDocumentationResultHandlerBuilder.build(identifier, consumer);
+    }
+
+
+    public static ResultHandler result(BiConsumer<String,DocumentContext> consumer, String key){
         return (r)->{
             String body = r.getResponse().getContentAsString();
             Object document = Configuration.defaultConfiguration().jsonProvider().parse(body);
@@ -172,9 +174,6 @@ public abstract class MockMvcRestDocs {
         };
     }
 
-    public static ResultHandler docs(Consumer<RestDocumentationResultHandlerBuilder> consumer, String identifier) {
-        return RestDocumentationResultHandlerBuilder.build(identifier, consumer);
-    }
 
 
     //////////////////////////////////////////////
