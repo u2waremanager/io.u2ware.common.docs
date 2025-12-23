@@ -8,7 +8,7 @@
 		<version>3.4.11</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>io.u2ware</groupId>
+	<groupId>io.u2ware.common</groupId>
 	<artifactId>u2ware-common-docs</artifactId>
 	<version>3.4.11</version>
 	<name>u2ware-common-docs</name>
