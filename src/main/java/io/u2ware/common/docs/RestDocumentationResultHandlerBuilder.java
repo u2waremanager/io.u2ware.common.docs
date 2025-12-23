@@ -60,7 +60,6 @@ public class RestDocumentationResultHandlerBuilder {
     public FieldDescriptors responseFields() {return responseFields;}
     public String identifier() {return identifier;}
 
-    @SuppressWarnings("serial")
     public static class HeaderDescriptors extends ArrayList<HeaderDescriptor>{
         public HeaderDescriptor headerWithName(String name){
             HeaderDescriptor descriptor = HeaderDocumentation.headerWithName(name);
@@ -69,7 +68,6 @@ public class RestDocumentationResultHandlerBuilder {
         }
     }
 
-    @SuppressWarnings("serial")
     public static class FieldDescriptors extends ArrayList<FieldDescriptor>{
         public FieldDescriptor fieldWithPath(String path){
             FieldDescriptor descriptor = PayloadDocumentation.fieldWithPath(path);
@@ -84,7 +82,6 @@ public class RestDocumentationResultHandlerBuilder {
         }
     }
 
-    @SuppressWarnings("serial")
     public static class ParameterDescriptors extends ArrayList<ParameterDescriptor>{
         public ParameterDescriptor parameterWithName(String name){
             ParameterDescriptor descriptor = RequestDocumentation.parameterWithName(name);
@@ -93,7 +90,6 @@ public class RestDocumentationResultHandlerBuilder {
         }
     }
 
-    @SuppressWarnings("serial")
     public static class RequestPartDescriptors extends ArrayList<RequestPartDescriptor>{
         public RequestPartDescriptor partWithName(String name){
             RequestPartDescriptor descriptor = RequestDocumentation.partWithName(name);
